@@ -1,8 +1,14 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@model HomeViewModel
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="d-flex justify-content-center">
+    <h1 class="text-center">Лучшие автомобили</h1>
+</div>
+
+<div class="row mx-5 my-0 mt-5 mb-2">
+    @{
+        foreach (Car car in Model.favCars)
+        {
+            @Html.Partial("AllCars",car)
+        }
+    }
 </div>

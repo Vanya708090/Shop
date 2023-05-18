@@ -1,32 +1,33 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Shop.Data.interfaces;
 using Shop.Models;
+using Shop.ViewModels;
 using System.Diagnostics;
 
 namespace Shop.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IAllCars _carRep;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IAllCars carRep)
         {
-            _logger = logger;
+            _carRep = carRep;
         }
 
-        public IActionResult Index()
+        public ViewResult Index()
         {
+            var homeCars = new HomeViewModel
+            {
+                favCars = _carRep.getFavCars
+            };
+            return View(homeCars);
+        }
+
+        public ViewResult Privacy()
+        {        
             return View();
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
     }
 }

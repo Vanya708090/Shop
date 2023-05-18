@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 
 using Shop.Data.Repository;
 using Shop.Data.Models;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,7 @@ builder.Configuration
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IAllCars, CarRepository>();
 builder.Services.AddTransient<ICarsCategory, CategoryRepository>();
+builder.Services.AddTransient<IAllOrders, OrdersRepository>();
 builder.Services.AddDbContext<AppDBContent>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -44,6 +46,7 @@ if (!app.Environment.IsDevelopment())
     
 }
 
+
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -51,6 +54,10 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "categoryFilter",
+    pattern: "Car/{action}/{category?}", defaults: new {Controller = "Car", action = "List" });
 
 app.MapControllerRoute(
     name: "default",
